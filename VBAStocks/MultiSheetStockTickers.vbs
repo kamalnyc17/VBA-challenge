@@ -86,7 +86,7 @@ Sub MultiSheetStockTickers()
             
         Next i
         
-        ' challenges - summary section
+        ' challenges - updating summary section
         ws.Cells(3, 14).Value = "Greatest % increase"
         ws.Cells(3, 15).Value = intGreatestPercentIncrease
         ws.Cells(4, 14).Value = "Greatest % decrease"
