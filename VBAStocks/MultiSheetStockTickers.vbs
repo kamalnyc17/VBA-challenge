@@ -3,7 +3,7 @@ Sub MultiSheetStockTickers()
     On Error Resume Next
     
     ' initialization section
-    Dim strTicker   As String
+    Dim strTicker, strTickerPercentIncrease, strTickerPercentDecrease, strTickerTotalVolume  As String
     Dim intOpeningPrice, intClosingPrice, intYearlyChange, intPercentChange, intTotalStockVolume As Double
     Dim intGreatestPercentIncrease, intGreatestPercentDecrease, intGreatestTotalVolume As Double
     Dim intLastRow, intResultsRow As Integer
@@ -28,6 +28,8 @@ Sub MultiSheetStockTickers()
                 ws.Cells(1, 10).Value = "Yearly Change"
                 ws.Cells(1, 11).Value = "Percent Change"
                 ws.Cells(1, 12).Value = "Total Stock Volume"
+                ws.Cells(1, 15).Value = "Ticker"
+                ws.Cells(1, 16).Value = "Value"
                 ws.Range("I1:L1").Columns.AutoFit
                 ws.Range("J2:J" & intLastRow).NumberFormat = "0.00"
                 ws.Range("K2:K" & intLastRow).NumberFormat = "0.00%"
@@ -75,27 +77,35 @@ Sub MultiSheetStockTickers()
             
             ' calculating summary section (challenge)
             If (intPercentChange > intGreatestPercentIncrease) Then
+                strTickerPercentIncrease = strTicker
                 intGreatestPercentIncrease = intPercentChange
             End If
             If (intPercentChange < intGreatestPercentDecrease) Then
+                strTickerPercentDecrease = strTicker
                 intGreatestPercentDecrease = intPercentChange
             End If
             If (intTotalStockVolume > intGreatestTotalVolume) Then
+                strTickerTotalVolume = strTicker
                 intGreatestTotalVolume = intTotalStockVolume
             End If
             
         Next i
         
-        ' challenges - updating summary section
-        ws.Cells(3, 14).Value = "Greatest % increase"
-        ws.Cells(3, 15).Value = intGreatestPercentIncrease
-        ws.Cells(4, 14).Value = "Greatest % decrease"
-        ws.Cells(4, 15).Value = intGreatestPercentDecrease
-        ws.Cells(5, 14).Value = "Greatest total volume"
-        ws.Cells(5, 15).Value = intGreatestTotalVolume
-        ws.Range("N3:N5").Columns.AutoFit
-        ws.Range("O3:O4").NumberFormat = "0.00%"
-        ws.Range("O5").NumberFormat = "00000"
+        ' challenges - summary section
+        ws.Cells(2, 14).Value = "Greatest % increase"
+        ws.Cells(2, 15).Value = strTickerPercentIncrease
+        ws.Cells(2, 16).Value = intGreatestPercentIncrease
+        ws.Cells(3, 14).Value = "Greatest % decrease"
+        ws.Cells(3, 15).Value = strTickerPercentDecrease
+        ws.Cells(3, 16).Value = intGreatestPercentDecrease
+        ws.Cells(4, 14).Value = "Greatest total volume"
+        ws.Cells(4, 15).Value = strTickerTotalVolume
+        ws.Cells(4, 16).Value = intGreatestTotalVolume
+        ws.Range("N2:N4").Columns.AutoFit
+        ws.Range("P2:P3").NumberFormat = "0.00%"
+        ws.Range("P4").NumberFormat = "00000"
+        ws.Range("O1:O4").HorizontalAlignment = xlCenter
+        ws.Range("P1").HorizontalAlignment = xlRight
         
     Next ws
     
@@ -103,3 +113,4 @@ Sub MultiSheetStockTickers()
     MsgBox "Congratulations! Process Completed Successfully", vbOKOnly, "Job Status"
     
 End Sub
+
